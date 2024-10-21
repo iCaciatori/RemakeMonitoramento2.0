@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles/styles.css" />
+  <link rel="icon" type="image/x-icon" href="maquina.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"
+    integrity="sha512-vc58qvvBdrDR4etbxMdlTt4GBQk1qjvyORR2nrsPsFPyrs+/u5c3+1Ct6upOgdZoIl7eq6k3a1UPDSNAQi/32A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.js"
+    integrity="sha512-iiZOijMkLFQSa43AyuzD6p176GJlnhWXEv7loEZFkCDpFQvZCijZLE6U8IRpAIb53KagIIwhSwHWTgsDlci/jw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <title>Projeto Monitoramento</title>
+</head>
+
+<body>
+
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span id="modal-close" class="close" onclick=>&times;</span>
+      <h2 id="modal-title">Detalhes da Máquina</h2>
+      <div id="modal-body">
+        <p id="idMaq">ID:</p>
+        <p id="statusMaq">Status:</p>
+        <p id="tempMaq">Média Temperatura: °C</p>
+        <p id="ruidoMaq">Média Ruído: dB</p>
+        <p id="rpmMaq">Média RPM: </p>
+        <p id="umidMaq">Média Umidade: %</p>
+        <div id="grafico"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-2" class="modal">
+    <div class="modal-content">
+      <span id="modal-close" class="close" onclick="fecharModal()">&times;</span>
+      <h2 id="add-maq-title">Adicione uma nova máquina: </h2>
+      <div id="input-list">
+        <input type="text" placeholder="Digite o tipo de máquina" id="tipo-maq">
+        <input type="text" placeholder="Digite um atributo da máquina" id="attr-1" required>
+        <input type="text" placeholder="Digite um atributo da máquina" id="attr-2" required>
+        <input type="text" placeholder="Digite um atributo da máquina" id="attr-3" required>
+      </div>
+      <button onclick="adicionarAtributo()">Adicionar atributo</button>
+      <button onclick="adicionarTipo()">Criar Tipo</button>
+    </div>
+  </div>
+
+  <script type="module">
+    /**
+     * Importa a classe Maquina
+     * Importa a classe PainelControle
+     * Importa a classe Servidor
+     * Importa a classe Operador
+     */
+    import { Maquina } from "./scripts/Maquina.js";
+    import { PainelControle } from "./scripts/PainelControle.js";
+    import { Servidor } from "./scripts/Servidor.js";
+    import { Operador } from "./scripts/Operador.js";
+    import { TipoMaquina } from "./scripts/TipoMaquina.js";
+
+    /**
+     * Roda somente depois do documento (HTML) ser carregado.
+     */
+    document.addEventListener("DOMContentLoaded", function () {
+      /**
+       * Instancia 1 operador da classe Operador.
+       * Instancia 1 servidor da classe Servidor.
+       * Instancia 1 servidor da classe Servidor.
+       * Instancia 1 painel de controle da classe PainelControle.
+       * Instancia 1 painel de controle da classe PainelControle.
+       */
+      const operador = new Operador("João");
+      const servidor = new Servidor(operador);
+      // const servidor2 = new Servidor(operador);
+      const painelControle = new PainelControle("001", servidor);
+      // const painelControle2 = new PainelControle("002", servidor2);
+      const padrao = new TipoMaquina('padrao');
+
+      padrao.adicionarAtributo('barulho', 50);
+      /**
+       * Instancia 5 objetos da classe Maquina
+       */
+      const maquina1 = new Maquina("001", padrao);
+      // const maquina2 = new Maquina("002");
+      // const maquina3 = new Maquina("003");
+      // const maquina4 = new Maquina("004");
+      // const maquina5 = new Maquina("005");
+
+      /**
+       * Adiciona as máquinas ao servidor 1
+       */
+      servidor.adicionarMaquina(maquina1);
+      // servidor.adicionarMaquina(maquina2);
+      // servidor.adicionarMaquina(maquina3);
+
+      /**
+       * Adiciona as máquinas ao servidor 2
+       */
+      // servidor2.adicionarMaquina(maquina4);
+      // servidor2.adicionarMaquina(maquina5);
+
+      /**
+       * Atualiza os painéis pela primeira vez.
+       * Sem isso, eles seriam chamados somente após cinco segungos da inicialização do site
+       * (O HTML não mostraria nenhuma máquina).
+       */
+      painelControle.atualizarDadosNoPainel();
+      // painelControle2.atualizarDadosNoPainel();
+
+      /**
+       * Atualiza os painéis a cada 5000 milisegundos (5 segundos)
+       */
+      setInterval(() => {
+        painelControle.atualizarDadosNoPainel();
+        // painelControle2.atualizarDadosNoPainel();
+        // painelControle.adicionarEventos();
+        // painelControle2.adicionarEventos();
+      }, 500);
+    });
+  </script>
+</body>
+
+</html>

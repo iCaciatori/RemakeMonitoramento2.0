@@ -7,7 +7,8 @@ export class Maquina {
     this.id = id;
     this.statusMaquina = "desligada";
     this.tipoMaquina = tipoMaquina;
-
+    this.atributos = {};
+    this.historicos = {};
 
     console.log(this);
     

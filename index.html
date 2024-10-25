@@ -57,75 +57,47 @@
   </div>
 
   <script type="module">
-    /**
-     * Importa a classe Maquina
-     * Importa a classe PainelControle
-     * Importa a classe Servidor
-     * Importa a classe Operador
-     */
+
     import { Maquina } from "./scripts/Maquina.js";
     import { PainelControle } from "./scripts/PainelControle.js";
     import { Servidor } from "./scripts/Servidor.js";
     import { Operador } from "./scripts/Operador.js";
     import { TipoMaquina } from "./scripts/TipoMaquina.js";
 
-    /**
-     * Roda somente depois do documento (HTML) ser carregado.
-     */
     document.addEventListener("DOMContentLoaded", function () {
-      /**
-       * Instancia 1 operador da classe Operador.
-       * Instancia 1 servidor da classe Servidor.
-       * Instancia 1 servidor da classe Servidor.
-       * Instancia 1 painel de controle da classe PainelControle.
-       * Instancia 1 painel de controle da classe PainelControle.
-       */
-      const operador = new Operador("João");
+      
+      // instancia as coisas
+      const operador = new Operador("João"); 
       const servidor = new Servidor(operador);
       // const servidor2 = new Servidor(operador);
       const painelControle = new PainelControle("001", servidor);
       // const painelControle2 = new PainelControle("002", servidor2);
       const padrao = new TipoMaquina('padrao');
-
       padrao.adicionarAtributo('ruido', 50);
-      /**
-       * Instancia 5 objetos da classe Maquina
-       */
+      padrao.adicionarAtributo('abbaa', 100);
+
       const maquina1 = new Maquina("001", padrao);
-      // const maquina2 = new Maquina("002");
+      const maquina2 = new Maquina("002", padrao);
       // const maquina3 = new Maquina("003");
       // const maquina4 = new Maquina("004");
       // const maquina5 = new Maquina("005");
 
-      /**
-       * Adiciona as máquinas ao servidor 1
-       */
       servidor.adicionarMaquina(maquina1);
-      // servidor.adicionarMaquina(maquina2);
+      servidor.adicionarMaquina(maquina2);
       // servidor.adicionarMaquina(maquina3);
 
-      /**
-       * Adiciona as máquinas ao servidor 2
-       */
+
       // servidor2.adicionarMaquina(maquina4);
       // servidor2.adicionarMaquina(maquina5);
 
-      /**
-       * Atualiza os painéis pela primeira vez.
-       * Sem isso, eles seriam chamados somente após cinco segungos da inicialização do site
-       * (O HTML não mostraria nenhuma máquina).
-       */
+
       painelControle.atualizarDadosNoPainel();
       // painelControle2.atualizarDadosNoPainel();
 
-      /**
-       * Atualiza os painéis a cada 5000 milisegundos (5 segundos)
-       */
-      setInterval(() => {
+
+      setInterval(() => { // fica rodando infinito
         painelControle.atualizarDadosNoPainel();
         // painelControle2.atualizarDadosNoPainel();
-        // painelControle.adicionarEventos();
-        // painelControle2.adicionarEventos();
       }, 500);
     });
   </script>

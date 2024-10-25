@@ -114,7 +114,7 @@ p {
   left: 4px;
   bottom: 4px;
   background-color: white;
-  transition: transform 0.3s ease, background-color 0.3s ease;
+  transition: transform 0.5s ease, background-color 0.3s ease;  
   /* Suavizando o transform */
 }
 

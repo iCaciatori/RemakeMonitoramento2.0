@@ -21,21 +21,11 @@ export class Modal {
       );
 
       document.getElementById("idMaq").innerText = `ID: ${maquina.id}`;
-      document.getElementById(
-        "statusMaq"
-      ).innerText = `Status: ${maquina.statusMaquina}`;
-      document.getElementById(
-        "tempMaq"
-      ).innerText = `Média Temperatura: ${mediaTemperatura.toFixed(2)} °C`;
-      document.getElementById(
-        "ruidoMaq"
-      ).innerText = `Média Ruído: ${mediaRuido.toFixed(2)} dB`;
-      document.getElementById(
-        "rpmMaq"
-      ).innerText = `Média RPM: ${mediaRpm.toFixed(2)}`;
-      document.getElementById(
-        "umidMaq"
-      ).innerText = `Média Umidade: ${mediaUmidade.toFixed(2)}%`;
+      document.getElementById("statusMaq").innerText = `Status: ${maquina.statusMaquina}`;
+      document.getElementById("tempMaq").innerText = `Média Temperatura: ${mediaTemperatura.toFixed(2)} °C`;
+      document.getElementById("ruidoMaq").innerText = `Média Ruído: ${mediaRuido.toFixed(2)} dB`;
+      document.getElementById("rpmMaq").innerText = `Média RPM: ${mediaRpm.toFixed(2)}`;
+      document.getElementById("umidMaq").innerText = `Média Umidade: ${mediaUmidade.toFixed(2)}%`;
 
       document.getElementById("modal").style.display = "block";
       this.renderizarGrafico(maquina.historicos);

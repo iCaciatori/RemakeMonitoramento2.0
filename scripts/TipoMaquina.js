@@ -5,17 +5,8 @@ export class TipoMaquina {
     }
 
     adicionarAtributo(nome, valorInicial) {
-        this.atributos.push({ nome: nome, valorInicial: valorInicial });
+        this.atributos.push({ nome: nome, valorInicial: valorInicial});
         console.log(this.atributos); ///////////////////////////////////////////////////
-    }
-
-    obterLimite(chave) {
-        for (const atributo of this.atributos) {
-            if (atributo.nome === chave) {
-                return atributo.valorInicial * 2;
-            }
-        }
-        return null; // Retorna null se o atributo não for encontrado
     }
 
     atributosValidos() {

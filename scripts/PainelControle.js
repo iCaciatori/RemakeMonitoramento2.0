@@ -14,6 +14,7 @@ export class PainelControle {
     this.painelInicializado = false;
     this.somErro = new Audio("../errorSound.mp3");
     this.inicializarPainel();
+    this.adicionarEventos();
     
     this.atualizarDadosNoPainel();
   }
@@ -47,7 +48,9 @@ export class PainelControle {
         "display: flex; flex-direction: column; align-items: center;";
 
       this.servidor.maquinas.forEach((maquina) => {
+        
         let dados = maquina.coletarDados();
+        console.log(dados);
         const idMaquina = dados.id;
 
         if (!this.notificacaoFlags[idMaquina]) {
@@ -113,27 +116,23 @@ export class PainelControle {
                 } data-id="${dados.id}" class="switch-status">
                 <span class="slider round"></span>
               </label>
-              <p class="temperatura">Temperatura: ${dados.temperatura} °C</p>
-              <p class="ruido">Ruído: ${dados.ruido} dB</p>
-              <p class="rpm">RPM: ${dados.rpm}</p>
-              <p class="umidade">Umidade: ${dados.umidade}%</p>
+              ${Object.keys(dados).map(chave =>
+                chave !== 'id' && chave !== 'status'
+                  ? `<p class="${chave}">${chave}: ${dados[chave] === da ? '0' : dados[chave] }</p>`
+                  : '').join('')}
               <button class="btn" data-id="${dados.id}">Verificar Dados</button>
             </div>
             `;
         } else {
-          maquinaElement.querySelector(
-            ".status"
-          ).innerText = `Status: ${dados.status}`;
-          maquinaElement.querySelector(
-            ".temperatura"
-          ).innerText = `Temperatura: ${dados.temperatura} °C`;
-          maquinaElement.querySelector(
-            ".ruido"
-          ).innerText = `Ruído: ${dados.ruido} dB`;
-          maquinaElement.querySelector(".rpm").innerText = `RPM: ${dados.rpm}`;
-          maquinaElement.querySelector(
-            ".umidade"
-          ).innerText = `Umidade: ${dados.umidade}%`;
+          maquinaElement.querySelector(".status").innerText = `Status: ${dados.status}`;
+          Object.keys(dados).forEach((chave) => {
+            if (chave !== 'id' && chave !== 'status') {
+              const attrElement = maquinaElement.querySelector(`.${chave}`);
+              if (attrElement) {
+                attrElement.innerText = `${chave}: ${dados[chave] === 100 ? '0' : dados[chave] }`;
+              }
+            }
+          });
         }
       });
 
@@ -143,7 +142,6 @@ export class PainelControle {
           .map((notif) => `<p class="notificacao">${notif.mensagem}</p>`)
           .join("");
 
-      this.adicionarEventos();
     } else {
       console.error(`Elemento com ID "panel${this.idNum}" não foi encontrado.`);
     }
@@ -157,27 +155,21 @@ export class PainelControle {
       return;
     }
 
-    /**
-     * Usado para remover event listeners anteriores
-     */
-    maquinasElement.replaceWith(maquinasElement.cloneNode(true));
-
-    
-    const novoMaquinasElement = document.getElementById(
-      `maquinas${this.idNum}`
-    );
-
-    novoMaquinasElement.addEventListener("change", (event) => {
+    maquinasElement.addEventListener("change", (event) => {
+      console.log(event.target);
       if (event.target.classList.contains("switch-status")) {
+
         const id = event.target.getAttribute("data-id");
         const status = event.target.checked ? "ligada" : "desligada";
+
         console.log(`Status da máquina ${id}: ${status}`);
+
         this.servidor.atualizarStatusMaquina(id, status);
         this.atualizarDadosNoPainel();
       }
     });
 
-    novoMaquinasElement.addEventListener("click", (event) => {
+    maquinasElement.addEventListener("click", (event) => {
       if (event.target.classList.contains("btn")) {
         const idMaquina = event.target.getAttribute("data-id");
         this.modal.mostrarModal(idMaquina);

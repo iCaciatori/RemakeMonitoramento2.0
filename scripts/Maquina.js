@@ -7,17 +7,14 @@ export class Maquina {
     this.id = id;
     this.statusMaquina = "desligada";
     this.tipoMaquina = tipoMaquina;
+    this.valoresAntigos = {};
     this.atributos = {};
     this.historicos = {};
 
-    console.log(this);
-    
-
     this.tipoMaquina.atributos.forEach((atributo) => {
-      console.log(atributo.nome);
-      console.log(atributo.valorInicial);
+      this.valoresAntigos[atributo.nome] = atributo.valorInicial;
       this.atributos[atributo.nome] = atributo.valorInicial;
-      this.historicos[atributo.nome] = []; // Inicializa o histórico como um array vazio
+      this.historicos[atributo.nome] = [];
     });
 
     this.criada = true;
@@ -33,15 +30,15 @@ export class Maquina {
      * Gera números aleatórios arredondados para duas casas decimais.
      */
     if (this.statusMaquina === "ligada") {
-      Object.keys(this.atributos).forEach(chave => {
+      Object.keys(this.atributos).forEach((chave) => {
         let valorAtual = this.atributos[chave];
         let novoValor = Math.random() <= 0.5 ? valorAtual - Math.random() : valorAtual + Math.random();
-        this.atributos[chave] = parseFloat(novoValor.toFixed(2)); // Atualiza o valor arredondado
-        this.historicos[chave].unshift(this.atributos[chave]); // Adiciona o novo valor ao histórico
+        this.atributos[chave] = parseFloat(novoValor.toFixed(2));
+        this.historicos[chave].unshift(this.atributos[chave]); 
       });
     } else {
-      Object.keys(this.atributos).forEach(chave => {
-        this.atributos[chave] = 0; // Atualiza o valor arredondado
+      Object.keys(this.atributos).forEach((chave) => {
+        this.atributos[chave] = this.valoresAntigos[chave];
       });
     }
 
